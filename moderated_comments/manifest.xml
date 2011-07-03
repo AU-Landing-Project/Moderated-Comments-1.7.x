@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+    <field key="author" value="Matt Beckett" />
+    <field key="version" value="1.0" />
+    <field key="description" value="Moderated Comments - comments are visible only after being approved by content owners.  If disabled, comments will be automatically approved and content reset to being unmoderated." />
+    <field key="website" value="http://clever-name.com" />
+    <field key="copyright" value="(C) University of Athabasca, 2011" />
+    <field key="licence" value="GNU Public License version 2" />
+    <field key="elgg_version" value="2009030702" />    
+</plugin_manifest>

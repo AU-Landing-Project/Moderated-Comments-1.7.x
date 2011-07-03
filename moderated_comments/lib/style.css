@@ -1,0 +1,24 @@
+.generic_comment.unreviewed {
+	background-color: #F7EDED;
+	border: 1px solid red !important;
+}
+
+.generic_comment.mc_notice {
+	color: red;
+	font-weight: bold;	
+}
+
+.moderate_options {
+	margin-top: 15px;	
+}
+
+.mc_moderation_control {
+	float: left;
+	width: 180px;
+	padding: 5px;	
+}
+
+.mc_clear_div {
+	height: 1px;
+	clear: both;	
+}

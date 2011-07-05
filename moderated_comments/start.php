@@ -33,9 +33,6 @@ function moderated_comments_init() {
 	
     // override permissions for the moderated_comments context
 	register_plugin_hook('permissions_check', 'all', 'moderated_comments_permissions_check');	
-	
-	// register cron hook
-    register_plugin_hook('cron', 'hourly', 'moderated_comments_cron');
 }
 
 
@@ -52,23 +49,6 @@ register_elgg_event_handler('create','all','moderated_comments_entity_create');
 
 // check if newly updated entity is public - if so moderate
 register_elgg_event_handler('update','all','moderated_comments_entity_create');
-
-
-/*
- * 	If this was installed and there is existing public content then it won't be moderated
- * 	This checks if cron has run in the last hour, or ever, and if not, then it does some
- * 	work making them all moderated.
- * 	Called on system shutdown so things don't get slowed down.
- */
-	//see if this is our first run, or if cron hasn't run in over an hour
-	$cron = get_plugin_setting('cron', 'moderated_comments');
-	$hour_ago = time() - (60*65); //giving 5 min leeway in case of slow cron, or crontrigger
-	
-	if(!is_numeric($cron) || $cron < $hour_ago){
-		// it's our first run, or cron isn't working, so we're converting any currently public
-		// entities to moderated status
-		register_elgg_event_handler('shutdown', 'system', 'moderated_comments_check_all_public');
-	}
 
 // extend the form view to present a notice that comments are moderated
 elgg_extend_view('comments/forms/edit', 'comments/forms/moderated_comments_pre_edit', 0);

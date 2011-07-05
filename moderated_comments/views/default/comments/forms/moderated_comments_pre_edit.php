@@ -11,13 +11,21 @@ $entity_guid = $vars['entity']->guid;
 // have to count total number of comments like this because we have a plugin hook
 // that modifies the default count to only include visible comments
 $tmpcommentcount = $vars['entity']->getAnnotations('generic_comment');
-$real_comment_num = count($tmpcommentcount);
+
+if(is_array($tmpcommentcount)){
+	$real_comment_num = count($tmpcommentcount);
+}
+else{
+	$real_comment_num = 0;
+}
+
 $visible_comment_count = elgg_count_comments($vars['entity']);
 
 //bug fixed in 1.7.9 - have to do this for now
 if($visible_comment_count == "<span>0</span>"){ $visible_comment_count = 0; }
 
 $comments_to_moderate = $real_comment_num - $visible_comment_count;
+
 
 // only show the message once
 if($mc_notice_count != 1){

@@ -43,6 +43,55 @@ function moderated_comments_add_to_review_list($obj){
 }
 
 //
+//	Makes all currently public entities moderated
+//	is a big lumbering operation, but shouldn't actually run very often
+//	called on sytem shutdown and cron so hopefully it won't affect anyone
+//
+function moderated_comments_check_all_public(){
+	$context = get_context();
+	set_context('moderated_comments');
+	//don't need to ignore access because we're looking for only public stuff
+	$options = array();
+	$options['type'] = 'object';
+	$options['limit'] = 99999999999; //is there a better way than this?
+	// gets all entities, will be a BIG query...
+	// can't see an elgg way to get only public entities at this time
+	$entities = elgg_get_entities($options);
+	
+	$count = 0;
+	$num_entities = count($entities);
+	
+	for($i=0; $i<$num_entities; $i++){
+		if(($entities[$i] instanceof ElggObject) && $entities[$i]->access_id == ACCESS_PUBLIC){
+			$entities[$i]->is_moderated = true;
+		}
+	}
+	
+	set_context($context);
+	set_plugin_setting('cron', time(), 'moderated_comments');
+}
+
+
+//
+//	called on hourly cron, checks if it's been more than an hour since the last
+//	remembered cron, if so the plugin may have been disabled
+//	so we have to check the public objects again
+//
+function moderated_comments_cron($hook, $type, $returnvalue, $params){
+	$time = time();
+	$an_hour_ago = $time - (60*65);		//given 5 min grace period
+	$last_time = get_plugin_setting('cron', 'moderated_comments');
+	
+	// only want to do the heavy work if we haven't seen cron in a while
+	// which could indicate that the plugin was disabled for a while
+	if(empty($last_time) || $last_time < $an_hour_ago){
+		moderated_comments_check_all_public();
+	}
+	
+	set_plugin_setting('cron', time(), 'moderated_comments');
+}
+
+//
 //	this function saves the array as a list of ids separated by commas
 //
 function moderated_comments_save_array($review_array, $entity){

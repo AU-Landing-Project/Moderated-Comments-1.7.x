@@ -1,0 +1,3 @@
+07/05/2011
+Added checks to make all pre-existing content moderated when the plugin is enabled
+Also checks on cron

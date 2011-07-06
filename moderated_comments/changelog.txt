@@ -1,2 +1,4 @@
 07/05/2011
-changed the way the plugin detects moderation.
+Changed the way the plugin detects moderation.
+Plugin can now moderate public content created before the plugin was enabled.
+Applied Jon Drons version check for the comment:count plugin hook bug.

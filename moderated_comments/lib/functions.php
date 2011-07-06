@@ -124,7 +124,10 @@ function moderated_comments_comment_count($hook, $type, $returnvalue, $params){
 		// that 0 might be a legit return value.
 		// but it works for our purpose...
 		// ticket submitted to elgg devs, fixed for 1.7.9
-		//if($count == 0) { $count = "<span>0</span>"; }
+		$elggversion=(int) preg_replace("/[^0-9\s]/","",get_version(true));
+		if($elggversion < 179){
+			if($count == 0) { $count = "<span>0</span>"; }
+		}
 		return $count;
 	}
 }

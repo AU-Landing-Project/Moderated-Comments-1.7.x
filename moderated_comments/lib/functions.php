@@ -7,7 +7,7 @@
 function moderated_comments_check($event, $object_type, $obj){
 	global $CONFIG;
 	
-	if(moderated_comments_is_moderated($obj->entity_guid) && !isloggedin()){
+	if($obj->name == "generic_comment" && moderated_comments_is_moderated($obj->entity_guid) && !isloggedin()){
 		$entity = get_entity($obj->entity_guid);
 		if($entity->owner_guid != get_loggedin_userid()){
 			moderated_comments_add_to_review_list($obj);
